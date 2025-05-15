@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: gehu
+Version: 1.3.1
+Summary: A simple Python package that helps you find and execute commands using AI.
+Author: Pim Verleg
+Author-email: pim_iets@hotmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: google-generativeai>=0.3.0
+Requires-Dist: python-dotenv>=0.19.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Pimterm
+
+![image](https://github.com/Pimverleg/pimterm/assets/13415440/130d25e6-1933-4a40-b3d4-b733105676c8)
+
+
+
+pimterm can be used to find the linux command you need.
+for example:
+
+### Using the short notation
+```bash
+pimterm c "how do I ping example.com?"
+ping example.com
+```
+
+### Using the long notation
+```bash
+pimterm command "how do i remove a file"
+rm filename
+```
+
+## You can also ask reqular questions:
+
+### Using the short notation
+```bash
+pimterm q  "who is cleopatra?"
+Cleopatra was the last active ruler of the Ptolemaic Kingdom of Egypt.
+```
+
+### Using the long notation
+```bash
+pimterm question  "what is the capital of the netherlands?"
+Amsterdam
+```
+
+
+### Notes
+
+## Intallation
+Make sure to add your chatgpt key to your system
+
+```bash
+pimterm c "how do i add my chatgpt key to my linux instalation?"
+echo "export OPENAI_API_KEY='YOUR_API_KEY'" >> ~/.bashrc
+```
+Then install using pip ( or by downloading the files )
+```bash
+pip install pimterm
+```
+
+
+
+
+The ai will try to return only the command needed. Somtimes when the ai feels explenation is needed it will add it in plain text.
