@@ -199,6 +199,155 @@ class CommandManager:
         return None
 
 
+def add_tag(self, command_name: str, tag: str):
+        """Add a tag to a command."""
+        for cmd in self.commands:
+            if cmd['command'] == command_name:
+                if 'tags' not in cmd:
+                    cmd['tags'] = set()
+                cmd['tags'].add(tag)
+                self.tags.add(tag)
+                print(f"Added tag '{tag}' to command '{command_name}'")
+                return
+        print(f"Command not found: {command_name}")
+
+    def search_by_tag(self, tag: str) -> List[Dict]:
+        """Search commands by tag."""
+        return [cmd for cmd in self.commands if 'tags' in cmd and tag in cmd['tags']]
+
+    def compare_commands(self, command1: str, command2: str) -> Dict:
+        """Compare two commands and show differences."""
+        cmd1 = next((cmd for cmd in self.commands if cmd['command'] == command1), None)
+        cmd2 = next((cmd for cmd in self.commands if cmd['command'] == command2), None)
+        
+        if not cmd1 or not cmd2:
+            return {"error": "One or both commands not found"}
+        
+        differences = {}
+        for key in set(cmd1.keys()) | set(cmd2.keys()):
+            if cmd1.get(key) != cmd2.get(key):
+                differences[key] = {
+                    'command1': cmd1.get(key),
+                    'command2': cmd2.get(key)
+                }
+        
+        return differences
+
+    def create_backup(self, backup_name: str = None):
+        """Create a backup of the current command list."""
+        if not backup_name:
+            backup_name = f"backup_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        
+        backup_path = os.path.join(self.backup_dir, backup_name)
+        with open(backup_path, 'w') as f:
+            json.dump({
+                'commands': self.commands,
+                'aliases': self.aliases,
+                'categories': list(self.categories),
+                'tags': list(self.tags),
+                'timestamp': datetime.datetime.now().isoformat()
+            }, f, indent=4)
+        print(f"Created backup: {backup_path}")
+
+    def restore_backup(self, backup_name: str):
+        """Restore from a backup file."""
+        backup_path = os.path.join(self.backup_dir, backup_name)
+        if not os.path.exists(backup_path):
+            print(f"Backup not found: {backup_name}")
+            return False
+        
+        with open(backup_path, 'r') as f:
+            backup_data = json.load(f)
+        
+        self.commands = backup_data['commands']
+        self.aliases = backup_data['aliases']
+        self.categories = set(backup_data['categories'])
+        self.tags = set(backup_data['tags'])
+        print(f"Restored from backup: {backup_name}")
+        return True
+
+    def display_commands(self, commands: List[Dict] = None) -> None:
+        """Display commands with syntax highlighting."""
+        if commands is None:
+            commands = self.commands
+        
+        print(f"\n{Fore.CYAN}{'Command':<15} {'Category':<20} {'OS':<25} Description{Style.RESET_ALL}")
+        print("-" * 100)
+        for cmd in commands:
+            os_str = ", ".join(cmd.get("os", ["All"]))
+            print(f"{Fore.GREEN}{cmd['command']:<15}{Style.RESET_ALL} "
+                  f"{Fore.YELLOW}{cmd['category']:<20}{Style.RESET_ALL} "
+                  f"{Fore.BLUE}{os_str:<25}{Style.RESET_ALL} "
+                  f"{cmd['description']}")
+
+    def search_commands(self, query: str) -> List[Dict]:
+        """Search commands by name, category, or description."""
+        query = query.lower()
+        return [cmd for cmd in self.commands if 
+                query in cmd['command'].lower() or 
+                query in cmd['category'].lower() or 
+                query in cmd['description'].lower()]
+
+    def filter_by_os(self, os_name: str) -> List[Dict]:
+        """Filter commands by operating system."""
+        return [cmd for cmd in self.commands if os_name in cmd.get("os", [])]
+
+    def filter_by_category(self, category: str) -> List[Dict]:
+        """Filter commands by category."""
+        return [cmd for cmd in self.commands if cmd['category'].lower() == category.lower()]
+
+    def export_to_json(self, filename: str) -> None:
+        """Export commands to a JSON file."""
+        with open(filename, 'w') as f:
+            json.dump(self.commands, f, indent=4)
+        print(f"Commands exported to {filename}")
+
+    def export_to_csv(self, filename: str) -> None:
+        """Export commands to a CSV file."""
+        with open(filename, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=['command', 'category', 'description', 'os', 'example'])
+            writer.writeheader()
+            writer.writerows(self.commands)
+        print(f"Commands exported to {filename}")
+
+    def save_commands(self, filename: str) -> None:
+        """Save the current command list to a file."""
+        with open(filename, 'w') as f:
+            json.dump(self.commands, f, indent=4)
+        print(f"Commands saved to {filename}")
+
+    def load_commands(self, filename: str) -> None:
+        """Load commands from a file."""
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.commands = json.load(f)
+            print(f"Commands loaded from {filename}")
+        else:
+            print(f"File {filename} not found")
+
+def display_menu():
+    """Display the enhanced main menu."""
+    print(f"\n{Fore.CYAN}=== Command Manager Menu ==={Style.RESET_ALL}")
+    print("1. Display all commands")
+    print("2. Search commands")
+    print("3. Filter by OS")
+    print("4. Filter by category")
+    print("5. Filter by tag")
+    print("6. Export to JSON")
+    print("7. Export to CSV")
+    print("8. Add new command")
+    print("9. Remove command")
+    print("10. Update command")
+    print("11. Add command alias")
+    print("12. Add command tag")
+    print("13. Compare commands")
+    print("14. View usage statistics")
+    print("15. Create backup")
+    print("16. Restore from backup")
+    print("17. View command history")
+    print("0. Exit")
+    return input("Select an option: ")
+
 
 def main():
     manager = CommandManager()
@@ -308,6 +457,3 @@ def main():
         
         else:
             print("Invalid option. Please try again.")
-
-if __name__ == "__main__":
-    main() 
