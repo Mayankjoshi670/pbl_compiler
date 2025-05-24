@@ -1,0 +1,2 @@
+[console_scripts]
+gehu = gehu:main
