@@ -9,4 +9,5 @@ gehu.egg-info/entry_points.txt
 gehu.egg-info/requires.txt
 gehu.egg-info/top_level.txt
 pimterm/__init__.py
+pimterm/commands_list.py
 pimterm/main.py
