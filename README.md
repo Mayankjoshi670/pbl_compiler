@@ -1,54 +1,113 @@
-# Pimterm
+# GEHU Command Line Interface
 
-![image](https://github.com/Pimverleg/pimterm/assets/13415440/130d25e6-1933-4a40-b3d4-b733105676c8)
+A powerful command-line interface tool that uses Google's Gemini AI to generate and execute commands based on natural language input.
 
+## Features
 
+- Natural language command generation
+- Direct command execution
+- File creation and manipulation
+- Git operations
+- Code analysis capabilities
+- Support for multiple programming languages
 
-pimterm can be used to find the linux command you need.
-for example:
+## Installation
 
-### Using the short notation
+1. Clone the repository:
 ```bash
-pimterm c "how do I ping example.com?"
-ping example.com
+git clone <repository-url>
+cd gehu
 ```
 
-### Using the long notation
+2. Install the required dependencies:
 ```bash
-pimterm command "how do i remove a file"
-rm filename
+pip install -r requirements.txt
 ```
 
-## You can also ask reqular questions:
-
-### Using the short notation
-```bash
-pimterm q  "who is cleopatra?"
-Cleopatra was the last active ruler of the Ptolemaic Kingdom of Egypt.
+3. Create a `.env` file in the project root and add your Google API key:
+```
+GOOGLE_API_KEY=your_api_key_here
 ```
 
-### Using the long notation
+## Usage
+
+### Basic Commands
+
+1. Generate a command without executing:
 ```bash
-pimterm question  "what is the capital of the netherlands?"
-Amsterdam
+gehu "your command description"
 ```
 
-
-### Notes
-
-## Intallation
-Make sure to add your chatgpt key to your system
-
+2. Generate and execute a command:
 ```bash
-pimterm c "how do i add my chatgpt key to my linux instalation?"
-echo "export OPENAI_API_KEY='YOUR_API_KEY'" >> ~/.bashrc
-```
-Then install using pip ( or by downloading the files )
-```bash
-pip install pimterm
+gehu "your command description" --run
 ```
 
+### Examples
 
+1. Create a Python file:
+```bash
+gehu "create a file test.py with a hello world function" --run
+```
 
+2. Create a C++ file:
+```bash
+gehu "create a file binary.cpp with binary search code" --run
+```
 
-The ai will try to return only the command needed. Somtimes when the ai feels explenation is needed it will add it in plain text.
+3. Git operations:
+```bash
+gehu "initialize git repository and make first commit" --run
+```
+
+4. Code Analysis:
+```bash
+gehu "analyze: def hello(): print('Hello')"
+```
+
+### Code Analysis Features
+
+The tool includes a built-in code analyzer that can:
+- Perform lexical analysis
+- Perform semantic analysis
+- Generate symbol tables
+- Detect common programming errors
+
+Example:
+```bash
+gehu "analyze: var x = 10; const y = 20; x = y;"
+```
+
+## Supported Operations
+
+1. File Operations:
+   - Create new files
+   - Write content to files
+   - Append content to files
+   - Support for multiple programming languages
+
+2. Git Operations:
+   - Initialize repositories
+   - Add files
+   - Commit changes
+   - Push to remote
+
+3. Code Analysis:
+   - Lexical analysis
+   - Semantic analysis
+   - Symbol table generation
+   - Error detection
+
+## Requirements
+
+- Python 3.7+
+- Google API key for Gemini AI
+- Required Python packages (see requirements.txt)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
